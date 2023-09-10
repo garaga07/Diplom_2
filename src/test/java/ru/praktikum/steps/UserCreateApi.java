@@ -3,13 +3,13 @@ package ru.praktikum.steps;
 import com.github.javafaker.Faker;
 import io.qameta.allure.Step;
 import io.restassured.response.Response;
-import ru.praktikum.models.UserCreationRequest;
+import ru.praktikum.models.UserCreateRequest;
 import static io.restassured.RestAssured.given;
 import static org.apache.http.HttpStatus.*;
 import static org.hamcrest.CoreMatchers.*;
 import static ru.praktikum.Constants.CREATE_USER_URL;
 
-public class UserCreationApi {
+public class UserCreateApi {
 
     private static final Faker faker = new Faker();
     public static String generatePassword() {
@@ -23,27 +23,27 @@ public class UserCreationApi {
     public static String generateEmail() { return faker.internet().emailAddress(); }
 
     @Step("Сформировать тело запроса для создания пользователя")
-    public static UserCreationRequest generatedPositiveUser() {
-        return new UserCreationRequest(generateEmail(),generateName(),generatePassword());
+    public static UserCreateRequest generatedPositiveUser() {
+        return new UserCreateRequest(generateEmail(),generateName(),generatePassword());
     }
 
     @Step("Сформировать тело запроса для создания пользователя с недостаточным набором данных - отсутствует email")
-    public static UserCreationRequest generatedUserWithMissingEmail() {
-        return new UserCreationRequest(null, generateName(), generatePassword());
+    public static UserCreateRequest generatedUserWithMissingEmail() {
+        return new UserCreateRequest(null, generateName(), generatePassword());
     }
 
     @Step("Сформировать тело запроса для создания пользователя с недостаточным набором данных - отсутствует name")
-    public static UserCreationRequest generatedUserWithMissingName() {
-        return new UserCreationRequest(generateEmail(), null, generatePassword());
+    public static UserCreateRequest generatedUserWithMissingName() {
+        return new UserCreateRequest(generateEmail(), null, generatePassword());
     }
 
     @Step("Сформировать тело запроса для создания пользователя с недостаточным набором данных - отсутствует password")
-    public static UserCreationRequest generatedUserWithMissingPassword() {
-        return new UserCreationRequest(generateEmail(), generateName(), null);
+    public static UserCreateRequest generatedUserWithMissingPassword() {
+        return new UserCreateRequest(generateEmail(), generateName(), null);
     }
 
     @Step("Отправить запрос для создания пользователя")
-    public static Response createUser(UserCreationRequest user) {
+    public static Response createUser(UserCreateRequest user) {
         return given()
                 .log().all()
                 .header("Content-type", "application/json")
@@ -53,7 +53,7 @@ public class UserCreationApi {
     }
 
     @Step("Проверить ответ на запрос создания пользователя")
-    public static void verifyPositiveCreationResponse(Response response, UserCreationRequest expectedUser) {
+    public static void verifyPositiveCreationResponse(Response response, UserCreateRequest expectedUser) {
         response.then()
                 .log().all()
                 .assertThat()

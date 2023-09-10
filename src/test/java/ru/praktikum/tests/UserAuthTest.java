@@ -10,20 +10,20 @@ import org.junit.Before;
 import org.junit.After;
 import org.junit.Test;
 import ru.praktikum.models.UserAuthorizationRequest;
-import ru.praktikum.models.UserCreationRequest;
+import ru.praktikum.models.UserCreateRequest;
 import static ru.praktikum.Constants.BASE_URL;
-import static ru.praktikum.steps.UserAuthorizationApi.*;
-import static ru.praktikum.steps.UserCreationApi.createUser;
-import static ru.praktikum.steps.UserCreationApi.generatedPositiveUser;
+import static ru.praktikum.steps.UserAuthApi.*;
+import static ru.praktikum.steps.UserCreateApi.createUser;
+import static ru.praktikum.steps.UserCreateApi.generatedPositiveUser;
 import static ru.praktikum.steps.UserDeleteApi.deleteUser;
 import static ru.praktikum.steps.UserDeleteApi.verifySuccessfulUserDeleteResponse;
 
 @Feature("Авторизация пользователя")
 @Severity(SeverityLevel.CRITICAL)
 @DisplayName("Тесты на авторизацию пользователя")
-public class UserAuthorizationTest {
+public class UserAuthTest {
     private String accessToken;
-    private UserCreationRequest user;
+    private UserCreateRequest user;
 
     @Before
     public void setUp() {

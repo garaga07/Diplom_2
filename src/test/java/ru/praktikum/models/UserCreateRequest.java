@@ -1,6 +1,6 @@
 package ru.praktikum.models;
 
-public class UserCreationRequest{
+public class UserCreateRequest {
 
 	private String email;
 	private String name;
@@ -8,7 +8,7 @@ public class UserCreationRequest{
 
 
 
-	public UserCreationRequest(String email, String name, String password) {
+	public UserCreateRequest(String email, String name, String password) {
 		this.email = email;
 		this.name = name;
 		this.password = password;

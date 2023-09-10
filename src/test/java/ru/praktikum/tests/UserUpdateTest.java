@@ -8,11 +8,11 @@ import io.restassured.response.Response;
 import org.junit.Before;
 import org.junit.Test;
 import ru.praktikum.models.UserAuthorizationRequest;
-import ru.praktikum.models.UserCreationRequest;
+import ru.praktikum.models.UserCreateRequest;
 import ru.praktikum.models.UserUpdateRequest;
 import static ru.praktikum.Constants.BASE_URL;
-import static ru.praktikum.steps.UserAuthorizationApi.*;
-import static ru.praktikum.steps.UserCreationApi.*;
+import static ru.praktikum.steps.UserAuthApi.*;
+import static ru.praktikum.steps.UserCreateApi.*;
 import static ru.praktikum.steps.UserDeleteApi.deleteUser;
 import static ru.praktikum.steps.UserDeleteApi.verifySuccessfulUserDeleteResponse;
 import static ru.praktikum.steps.UserUpdateApi.*;
@@ -29,9 +29,9 @@ public class UserUpdateTest {
     @DisplayName("Редактирование пользователя")
     public void userUpdateTest() {
         //Создание пользователя
-        UserCreationRequest userCreationRequest = generatedPositiveUser();
-        Response responseCreateUser = createUser(userCreationRequest);
-        verifyPositiveCreationResponse(responseCreateUser,userCreationRequest);
+        UserCreateRequest userCreateRequest = generatedPositiveUser();
+        Response responseCreateUser = createUser(userCreateRequest);
+        verifyPositiveCreationResponse(responseCreateUser, userCreateRequest);
         String accessTokenAfterCreateUser = responseCreateUser.getBody().jsonPath().getString("accessToken");
         //Редактирование пользователя
         UserUpdateRequest userUpdateRequest = generatedUpdateUser();

@@ -2,8 +2,8 @@ package ru.praktikum.models;
 
 import java.util.List;
 
-public class CreateOrderRequest{
-	public CreateOrderRequest(List<String> ingredients) {
+public class UserCreateOrderRequest {
+	public UserCreateOrderRequest(List<String> ingredients) {
 		this.ingredients = ingredients;
 	}
 

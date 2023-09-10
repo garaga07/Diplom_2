@@ -8,16 +8,16 @@ import io.restassured.RestAssured;
 import io.restassured.response.Response;
 import org.junit.Before;
 import org.junit.Test;
-import ru.praktikum.models.UserCreationRequest;
+import ru.praktikum.models.UserCreateRequest;
 import static ru.praktikum.Constants.BASE_URL;
-import static ru.praktikum.steps.UserCreationApi.*;
+import static ru.praktikum.steps.UserCreateApi.*;
 import static ru.praktikum.steps.UserDeleteApi.deleteUser;
 import static ru.praktikum.steps.UserDeleteApi.verifySuccessfulUserDeleteResponse;
 
 @Feature("Создание пользователя")
 @Severity(SeverityLevel.CRITICAL)
 @DisplayName("Тесты на создание пользователя")
-public class UserCreationTest {
+public class UserCreateTest {
     @Before
     public void setUp() {
         RestAssured.baseURI = BASE_URL;
@@ -28,7 +28,7 @@ public class UserCreationTest {
     @DisplayName("Создание пользователя - позитивный сценарий")
     public void positiveUserCreationTest() {
         //Создание пользователя
-        UserCreationRequest user = generatedPositiveUser();
+        UserCreateRequest user = generatedPositiveUser();
         Response responseCreateUser = createUser(user);
         verifyPositiveCreationResponse(responseCreateUser,user);
         String accessToken = responseCreateUser.getBody().jsonPath().getString("accessToken");
@@ -42,7 +42,7 @@ public class UserCreationTest {
     @DisplayName("Создание пользователя с повторяющимся email")
     public void duplicateEmailUserCreationTest() {
         //Создание пользователя
-        UserCreationRequest user = generatedPositiveUser();
+        UserCreateRequest user = generatedPositiveUser();
         Response responseCreateUser = createUser(user);
         String accessToken = responseCreateUser.getBody().jsonPath().getString("accessToken");
         //Создание пользователя c повторяющимся email
@@ -57,7 +57,7 @@ public class UserCreationTest {
     @Severity(SeverityLevel.CRITICAL)
     @DisplayName("Проверка валидации при создании пользователя - отсутствует email")
     public void missingEmailUserCreationTest() {
-        UserCreationRequest user = generatedUserWithMissingEmail();
+        UserCreateRequest user = generatedUserWithMissingEmail();
         Response response = createUser(user);
         verifyMissingDataCreationResponse(response);
     }
@@ -66,7 +66,7 @@ public class UserCreationTest {
     @Severity(SeverityLevel.CRITICAL)
     @DisplayName("Проверка валидации при создании пользователя - отсутствует password")
     public void missingPasswordUserCreationTest() {
-        UserCreationRequest user = generatedUserWithMissingPassword();
+        UserCreateRequest user = generatedUserWithMissingPassword();
         Response response = createUser(user);
         verifyMissingDataCreationResponse(response);
     }
@@ -75,7 +75,7 @@ public class UserCreationTest {
     @Severity(SeverityLevel.CRITICAL)
     @DisplayName("Проверка валидации при создании пользователя - отсутствует name")
     public void missingNameUserCreationTest() {
-        UserCreationRequest user = generatedUserWithMissingName();
+        UserCreateRequest user = generatedUserWithMissingName();
         Response response = createUser(user);
         verifyMissingDataCreationResponse(response);
     }

@@ -8,14 +8,14 @@ import io.restassured.RestAssured;
 import io.restassured.response.Response;
 import org.junit.Before;
 import org.junit.Test;
-import ru.praktikum.models.CreateOrderRequest;
-import ru.praktikum.models.UserCreationRequest;
-import ru.praktikum.models.createOrderResponse.CreateOrderResponse;
+import ru.praktikum.models.UserCreateOrderRequest;
+import ru.praktikum.models.UserCreateRequest;
+import ru.praktikum.models.userCreateOrderResponse.UserCreateOrderResponse;
 import static ru.praktikum.Constants.BASE_URL;
-import static ru.praktikum.steps.GetUserOrderListApi.*;
-import static ru.praktikum.steps.OrderCreateApi.*;
-import static ru.praktikum.steps.UserCreationApi.createUser;
-import static ru.praktikum.steps.UserCreationApi.generatedPositiveUser;
+import static ru.praktikum.steps.UserGetOrderListApi.*;
+import static ru.praktikum.steps.UserCreateOrderApi.*;
+import static ru.praktikum.steps.UserCreateApi.createUser;
+import static ru.praktikum.steps.UserCreateApi.generatedPositiveUser;
 import static ru.praktikum.steps.UserDeleteApi.deleteUser;
 import static ru.praktikum.steps.UserDeleteApi.verifySuccessfulUserDeleteResponse;
 
@@ -32,16 +32,16 @@ public class UserGetOrderListTest {
     @DisplayName("Получение списка заказов авторизованным пользователем")
     public void usersGetOrderListWithAuthorizationTokenTest() {
         //Создание пользователя
-        UserCreationRequest user = generatedPositiveUser();
+        UserCreateRequest user = generatedPositiveUser();
         Response responseCreateUser = createUser(user);
         String accessToken = responseCreateUser.getBody().jsonPath().getString("accessToken");
         //Создание заказа
-        CreateOrderRequest createOrderRequest = generateOrderWithValidIngredients();
-        CreateOrderResponse createOrderResponse = createOrderWithAuthorizationToken(accessToken,createOrderRequest);
-        verifyOrderCreationResponseWithToken(createOrderResponse, user);
+        UserCreateOrderRequest userCreateOrderRequest = generateOrderWithValidIngredients();
+        UserCreateOrderResponse userCreateOrderResponse = createOrderWithAuthorizationToken(accessToken, userCreateOrderRequest);
+        verifyOrderCreationResponseWithToken(userCreateOrderResponse, user);
         //Получение списка заказов
         Response response = getUserOrderListWithAuthorizationToken(accessToken);
-        verifyUserGetOrderListResponseWithAuthorizationToken(response,createOrderResponse);
+        verifyUserGetOrderListResponseWithAuthorizationToken(response, userCreateOrderResponse);
         //Удаление пользователя
         Response responseDelete = deleteUser(accessToken);
         verifySuccessfulUserDeleteResponse(responseDelete);

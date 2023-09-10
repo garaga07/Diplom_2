@@ -1,6 +1,6 @@
-package ru.praktikum.models.createOrderResponse;
+package ru.praktikum.models.userCreateOrderResponse;
 
-public class CreateOrderResponse{
+public class UserCreateOrderResponse {
 	private boolean success;
 	private String name;
 	private Order order;

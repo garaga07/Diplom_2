@@ -3,25 +3,25 @@ package ru.praktikum.steps;
 import io.qameta.allure.Step;
 import io.restassured.response.Response;
 import ru.praktikum.models.UserAuthorizationRequest;
-import ru.praktikum.models.UserCreationRequest;
+import ru.praktikum.models.UserCreateRequest;
 import ru.praktikum.models.UserUpdateRequest;
 import static io.restassured.RestAssured.given;
 import static org.apache.http.HttpStatus.*;
 import static org.hamcrest.CoreMatchers.*;
 import static ru.praktikum.Constants.AUTHORIZATION_USER_URL;
 
-public class UserAuthorizationApi {
+public class UserAuthApi {
     @Step("Получить данные для входа в систему после создания пользователя")
-    public static UserAuthorizationRequest getUserAuthorizationCredentialsAfterCreate(UserCreationRequest userCreationRequest) {
-        return new UserAuthorizationRequest(userCreationRequest.getEmail(),userCreationRequest.getPassword());
+    public static UserAuthorizationRequest getUserAuthorizationCredentialsAfterCreate(UserCreateRequest userCreateRequest) {
+        return new UserAuthorizationRequest(userCreateRequest.getEmail(), userCreateRequest.getPassword());
     }
     @Step("Получить данные для входа в систему после редактирования пользователя")
     public static UserAuthorizationRequest getUserAuthorizationCredentialsAfterUpdate(UserUpdateRequest userUpdateRequest) {
         return new UserAuthorizationRequest(userUpdateRequest.getEmail(),userUpdateRequest.getPassword());
     }
     @Step("Получить данные для входа в систему с неверным паролем пользователя")
-    public static UserAuthorizationRequest generateUserAuthorizationRequestWithIncorrectPassword(UserCreationRequest userCreationRequest) {
-        return new UserAuthorizationRequest (userCreationRequest.getEmail(),"123");
+    public static UserAuthorizationRequest generateUserAuthorizationRequestWithIncorrectPassword(UserCreateRequest userCreateRequest) {
+        return new UserAuthorizationRequest (userCreateRequest.getEmail(),"123");
     }
 
     @Step("Отправить запрос на авторизацию пользователя в системе")
@@ -35,7 +35,7 @@ public class UserAuthorizationApi {
     }
 
     @Step("Проверить ответ на запрос авторизации пользователя после создания")
-    public static void verifySuccessfulAuthorizationAfterUserCreation(Response response, UserCreationRequest expectedUser) {
+    public static void verifySuccessfulAuthorizationAfterUserCreation(Response response, UserCreateRequest expectedUser) {
         response.then()
                 .log().all()
                 .assertThat()

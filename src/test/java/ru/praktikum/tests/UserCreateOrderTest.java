@@ -8,20 +8,20 @@ import io.restassured.RestAssured;
 import io.restassured.response.Response;
 import org.junit.Before;
 import org.junit.Test;
-import ru.praktikum.models.CreateOrderRequest;
-import ru.praktikum.models.UserCreationRequest;
-import ru.praktikum.models.createOrderResponse.CreateOrderResponse;
+import ru.praktikum.models.UserCreateOrderRequest;
+import ru.praktikum.models.UserCreateRequest;
+import ru.praktikum.models.userCreateOrderResponse.UserCreateOrderResponse;
 import static ru.praktikum.Constants.BASE_URL;
-import static ru.praktikum.steps.OrderCreateApi.*;
-import static ru.praktikum.steps.UserCreationApi.createUser;
-import static ru.praktikum.steps.UserCreationApi.generatedPositiveUser;
+import static ru.praktikum.steps.UserCreateOrderApi.*;
+import static ru.praktikum.steps.UserCreateApi.createUser;
+import static ru.praktikum.steps.UserCreateApi.generatedPositiveUser;
 import static ru.praktikum.steps.UserDeleteApi.deleteUser;
 import static ru.praktikum.steps.UserDeleteApi.verifySuccessfulUserDeleteResponse;
 
 @Feature("Создание заказов")
 @Severity(SeverityLevel.CRITICAL)
 @DisplayName("Тесты на создание заказов")
-public class UserOrderCreateTest {
+public class UserCreateOrderTest {
     @Before
     public void setUp() {
         RestAssured.baseURI = BASE_URL;
@@ -31,12 +31,12 @@ public class UserOrderCreateTest {
     @DisplayName("Созданиие заказа с игредиентами авторизованным пользователем")
     public void createOrderWithTokenTest() {
         //Создание пользователя
-        UserCreationRequest user = generatedPositiveUser();
+        UserCreateRequest user = generatedPositiveUser();
         Response responseCreateUser = createUser(user);
         String accessToken = responseCreateUser.getBody().jsonPath().getString("accessToken");
         //Создание заказа
-        CreateOrderRequest createOrderRequest = generateOrderWithValidIngredients();
-        CreateOrderResponse response = createOrderWithAuthorizationToken(accessToken,createOrderRequest);
+        UserCreateOrderRequest userCreateOrderRequest = generateOrderWithValidIngredients();
+        UserCreateOrderResponse response = createOrderWithAuthorizationToken(accessToken, userCreateOrderRequest);
         verifyOrderCreationResponseWithToken(response, user);
         //Удаление пользователя
         Response responseDelete = deleteUser(accessToken);
@@ -47,8 +47,8 @@ public class UserOrderCreateTest {
     @DisplayName("Созданиие заказа с игредиентами неавторизованным пользователем")
     public void createOrderWithoutTokenTest() {
         //Создание заказа
-        CreateOrderRequest createOrderRequest = generateOrderWithValidIngredients();
-        Response response = createOrderWithoutAuthorizationToken(createOrderRequest);
+        UserCreateOrderRequest userCreateOrderRequest = generateOrderWithValidIngredients();
+        Response response = createOrderWithoutAuthorizationToken(userCreateOrderRequest);
         verifyOrderCreationResponseWithoutToken(response);
     }
 
@@ -57,8 +57,8 @@ public class UserOrderCreateTest {
     @DisplayName("Созданиие заказа с неверным хешем ингредиентов")
     public void createOrderWithIncorrectHashIngredientsTest() {
         //Создание заказа
-        CreateOrderRequest createOrderRequest = generateOrderWithInvalidIngredientsHash();
-        Response response = createOrderWithoutAuthorizationToken(createOrderRequest);
+        UserCreateOrderRequest userCreateOrderRequest = generateOrderWithInvalidIngredientsHash();
+        Response response = createOrderWithoutAuthorizationToken(userCreateOrderRequest);
         verifyOrderCreationResponseWithInvalidIngredientHash(response);
     }
 
@@ -67,8 +67,8 @@ public class UserOrderCreateTest {
     @DisplayName("Созданиие заказа без ингредиентов")
     public void createOrderWithoutIngredientsTest() {
         //Создание заказа
-        CreateOrderRequest createOrderRequest = generateOrderWithoutIngredients();
-        Response response = createOrderWithoutAuthorizationToken(createOrderRequest);
+        UserCreateOrderRequest userCreateOrderRequest = generateOrderWithoutIngredients();
+        Response response = createOrderWithoutAuthorizationToken(userCreateOrderRequest);
         verifyOrderCreationResponseWithoutIngredients(response);
     }
 

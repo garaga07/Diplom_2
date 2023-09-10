@@ -2,9 +2,9 @@ package ru.praktikum.steps;
 
 import io.qameta.allure.Step;
 import io.restassured.response.Response;
-import ru.praktikum.models.CreateOrderRequest;
-import ru.praktikum.models.UserCreationRequest;
-import ru.praktikum.models.createOrderResponse.CreateOrderResponse;
+import ru.praktikum.models.UserCreateOrderRequest;
+import ru.praktikum.models.UserCreateRequest;
+import ru.praktikum.models.userCreateOrderResponse.UserCreateOrderResponse;
 import java.util.ArrayList;
 import java.util.List;
 import static io.restassured.RestAssured.given;
@@ -14,31 +14,31 @@ import static org.hamcrest.Matchers.*;
 import static org.junit.Assert.*;
 import static ru.praktikum.Constants.*;
 
-public class OrderCreateApi {
+public class UserCreateOrderApi {
     @Step("Сформировать тело запроса для создания заказа с ингредиентами")
-    public static CreateOrderRequest generateOrderWithValidIngredients() {
+    public static UserCreateOrderRequest generateOrderWithValidIngredients() {
         List<String> ingredients = new ArrayList<>();
         ingredients.add(INGREDIENT_HASH_1);
         ingredients.add(INGREDIENT_HASH_2);
         ingredients.add(INGREDIENT_HASH_3);
-        return new CreateOrderRequest(ingredients);
+        return new UserCreateOrderRequest(ingredients);
     }
 
     @Step("Сформировать тело запроса для создания заказа без ингредиентов")
-    public static CreateOrderRequest generateOrderWithoutIngredients() {
+    public static UserCreateOrderRequest generateOrderWithoutIngredients() {
         List<String> ingredients = new ArrayList<>();
-        return new CreateOrderRequest(ingredients);
+        return new UserCreateOrderRequest(ingredients);
     }
 
     @Step("Сформировать тело запроса для создания заказа с неверным хешем ингредиента")
-    public static CreateOrderRequest generateOrderWithInvalidIngredientsHash() {
+    public static UserCreateOrderRequest generateOrderWithInvalidIngredientsHash() {
         List<String> ingredients = new ArrayList<>();
         ingredients.add(INVALID_INGREDIENT_HASH);
-        return new CreateOrderRequest(ingredients);
+        return new UserCreateOrderRequest(ingredients);
     }
 
     @Step("Отправить запрос для создания заказа с токеном авторизации")
-    public static CreateOrderResponse createOrderWithAuthorizationToken(String accessToken, CreateOrderRequest order) {
+    public static UserCreateOrderResponse createOrderWithAuthorizationToken(String accessToken, UserCreateOrderRequest order) {
         return given()
                 .log().all()
                 .header("Authorization", accessToken)
@@ -49,11 +49,11 @@ public class OrderCreateApi {
                 .then()
                 .extract()
                 .body()
-                .as(CreateOrderResponse.class);
+                .as(UserCreateOrderResponse.class);
     }
 
     @Step("Отправить запрос для создания заказа без токена авторизации")
-    public static Response createOrderWithoutAuthorizationToken(CreateOrderRequest order) {
+    public static Response createOrderWithoutAuthorizationToken(UserCreateOrderRequest order) {
         return given()
                 .log().all()
                 .header("Content-type", "application/json")
@@ -63,7 +63,7 @@ public class OrderCreateApi {
     }
 
     @Step("Проверить ответ на создание заказа с токеном авторизации")
-    public static void verifyOrderCreationResponseWithToken(CreateOrderResponse response, UserCreationRequest user) {
+    public static void verifyOrderCreationResponseWithToken(UserCreateOrderResponse response, UserCreateRequest user) {
         assertTrue(response.isSuccess());
         assertNotNull(response.getName());
         assertNotNull(response.getOrder().getIngredients());

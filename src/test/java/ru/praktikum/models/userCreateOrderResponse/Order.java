@@ -1,4 +1,4 @@
-package ru.praktikum.models.createOrderResponse;
+package ru.praktikum.models.userCreateOrderResponse;
 
 import java.util.List;
 import com.google.gson.annotations.SerializedName;
